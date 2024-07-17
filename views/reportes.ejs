@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery library -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+      margin-top: 70px; /* Ajuste para dejar espacio para el sidebar fijo */
+    }
+    .sidebar {
+      width: 250px;
+      height: 100%;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 100;
+      background-color: #343a40; /* Color de fondo oscuro */
+      padding-top: 20px; /* Espaciado arriba */
+    }
+    .sidebar h2 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .sidebar a {
+      padding: 10px 15px;
+      text-decoration: none;
+      display: block;
+      color: #fff;
+    }
+    .sidebar a:hover {
+      background-color: #495057; /* Color de fondo más oscuro al pasar el ratón */
+    }
+    .container-main {
+      margin-left: 250px; /* Ajuste para compensar el ancho del sidebar */
+      padding: 20px;
+    }
+    .container-sm {
+      margin-top: 30px;
+    }
+    .card {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: none;
+    }
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center; /* Centrar el contenido del card-body */
+    }
+    .card-title {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+    .card-text {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #007bff;
+    }
+    .chart-container {
+      max-width: 100%; /* Asegura que el gráfico no supere el ancho disponible */
+      height: 300px; /* Altura fija para todos los gráficos */
+      margin-bottom: 30px; /* Espacio inferior para separar los gráficos */
+    }
+    @media (max-width: 768px) {
+      .card-body {
+        padding: 10px;
+      }
+      .sidebar {
+        width: 100%; /* Sidebar ocupa todo el ancho en pantallas pequeñas */
+        position: static; /* Quita la posición fija para que no se superponga */
+      }
+      .container-main {
+        margin-left: 0; /* Ajuste de margen para pantallas pequeñas */
+      }
+      body {
+        margin-top: 0; /* Ajuste del margen superior para pantallas pequeñas */
+      }
+    }
+    /* Estilos para impresión */
+    @media print {
+      .chart-container {
+        height: auto !important; /* Ajuste de altura automática para los gráficos */
+      }
+      .sidebar, .btn-print {
+        display: none; /* Ocultar la barra lateral y el botón de impresión en la impresión */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Admin Panel</h2>
+    <a href="/admin/dashboard" class="text-white d-block py-2">Dashboard</a>
+    <a href="/admin/hoteles" class="text-white d-block py-2">Gestionar Hoteles</a>
+    <a href="/admin/logout" class="text-white d-block py-2">Logout</a>
+  </div>
+  
+  <div class="container-main" id="container-main">
+    <div class="container-sm">
+      <h2 class="text-center mt-4">Dashboard</h2>
+      <!-- Número total de hoteles -->
+      <div class="row mb-4">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Número total de hoteles</h5>
+              <p class="card-text"><%= totalHoteles %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-sm">
+      <h2 class="text-center mt-4">Reportes</h2>
+
+      <!-- Distribución de hoteles por provincia y categorías -->
+      <div class="row mb-4">
+        <!-- Gráfico de provincias -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Distribución de hoteles por Distrito</h5>
+              <div class="chart-container">
+                <canvas id="chartProvincias"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gráfico de categorías -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Distribución de categorías de hoteles</h5>
+              <div class="chart-container">
+                <canvas id="chartCategorias"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promedio de precios por categoría -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Promedio de precios por categoría</h5>
+              <div class="chart-container">
+                <canvas id="chartPrecios"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón para imprimir -->
+    <div class="text-center mt-4">
+      <button class="btn btn-primary btn-print" id="btnPrint">Imprimir Reportes</button>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // Cargar gráficos cuando el documento esté listo
+      loadCharts();
+
+      $('#btnPrint').click(function() {
+        var printContents = document.getElementById('container-main').innerHTML;
+        var originalContents = document.body.innerHTML;
+        var popupWin = window.open('', '_blank', 'width=600,height=600');
+        popupWin.document.open();
+        popupWin.document.write(`
+          <html>
+            <head>
+              <title>Print</title>
+              <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+              <style>
+                body {
+                  font-size: 14px;
+                }
+                .card {
+                  margin-bottom: 20px;
+                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                  border: none;
+                }
+                .card-body {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  align-items: center;
+                  text-align: center;
+                }
+                .card-title {
+                  font-size: 1.5rem;
+                  margin-bottom: 20px;
+                }
+                .card-text {
+                  font-size: 2rem;
+                  font-weight: bold;
+                  color: #007bff;
+                }
+                .chart-container {
+                  max-width: 100%;
+                  height: 300px;
+                  margin-bottom: 30px;
+                }
+              </style>
+            </head>
+            <body onload="window.print();window.close()">
+              <div class="container">
+                ${printContents}
+              </div>
+            </body>
+          </html>
+        `);
+        popupWin.document.close();
+      });
+    });
+
+    // Función para cargar los gráficos
+    function loadCharts() {
+      // Datos para el gráfico de provincias
+      const provinciasData = <%- JSON.stringify(dataProvincias) %>;
+      const provinciasLabels = provinciasData.map(item => item.provincia);
+      const provinciasCounts = provinciasData.map(item => item.count);
+
+      // Gráfico de provincias
+      new Chart(document.getElementById('chartProvincias'), {
+        type: 'bar',
+        data: {
+          labels: provinciasLabels,
+          datasets: [{
+            label: 'Número de Hoteles',
+            data: provinciasCounts,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      // Datos para el gráfico de categorías
+      const categoriasData = <%- JSON.stringify(dataCategorias) %>;
+      const categoriasLabels = categoriasData.map(item => item.categoria);
+      const categoriasCounts = categoriasData.map(item => item.count);
+
+      // Gráfico de categorías
+      new Chart(document.getElementById('chartCategorias'), {
+        type: 'pie',
+        data: {
+          labels: categoriasLabels,
+          datasets: [{
+            label: 'Categorías de Hoteles',
+            data: categoriasCounts,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+
+      // Datos para el gráfico de precios
+      const preciosData = <%- JSON.stringify(dataPrecios) %>;
+      const preciosLabels = preciosData.map(item => item.categoria);
+      const preciosAvgPrices = preciosData.map(item => item.avgPrice);
+
+      // Gráfico de precios
+      new Chart(document.getElementById('chartPrecios'), {
+        type: 'bar',
+        data: {
+          labels: preciosLabels,
+          datasets: [{
+            label: 'Precio Promedio',
+            data: preciosAvgPrices,
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    }
+  </script>
+</body>
+</html>

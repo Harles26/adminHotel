@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Listado de Administradores</title>
+  <link href="/css/styles.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+  <style>
+ 
+
+    /* Estilos para el sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 250px;
+      background-color: #343a40;
+      color: #fff;
+      padding-top: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 10px 16px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      background-color: #495057;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Estilos para el contenido principal */
+    .container {
+      margin-left: 250px; /* Espacio para el sidebar */
+      padding-top: 20px;
+    }
+
+    .card {
+      border: none;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      background-color: #007bff;
+      color: #fff;
+      border-bottom: none;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      margin-top: 20px;
+    }
+  </style>
+<body>
+    <div class="sidebar bg-dark text-white">
+        <h2 class="text-center py-3">Admin Panel</h2>
+        <a href="/admin/dashboard" class="text-white d-block py-2">Dashboard</a>
+        <a href="/admin/hoteles" class="text-white d-block py-2">Gestionar Hoteles</a>
+        <a href="/admin/administradores" class="text-white d-block py-2">Listado de Administradores</a> <!-- Nuevo enlace -->
+    
+        <a href="/admin/logout">Logout</a>
+      </div>
+      <div class="container mt-4">
+        <h1 class="mb-4">Listado de Administradores</h1>
+        <table class="table table-striped table-bordered table-hover">
+          <thead class="thead-dark">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% administradores.forEach(admin => { %>
+              <tr>
+                <td><%= admin.id %></td>
+                <td><%= admin.nombre %></td>
+                <td><%= admin.email %></td>
+                <td><%= admin.rol %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+</body>
+</html>

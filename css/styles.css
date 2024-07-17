@@ -1,0 +1,82 @@
+/* Estilos para el sidebar */
+.sidebar {
+  background-color: #343a40; /* Color de fondo oscuro */
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  padding-top: 20px;
+}
+
+.sidebar a {
+  display: block;
+  color: #f8f9fa; /* Color de texto claro */
+  padding: 10px 16px;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  background-color: #495057; /* Color de fondo al pasar el mouse */
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+/* Estilos para el contenido principal */
+.container {
+  margin-left: 250px; /* Ajuste para dejar espacio al sidebar */
+  padding-top: 20px;
+}
+
+/* Estilos para la tabla */
+.table {
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+/* Estilos para los botones */
+.btn {
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #007bff; /* Color botón primario */
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9; /* Color botón primario al pasar el mouse */
+}
+
+.btn-warning {
+  background-color: #ffc107; /* Color botón de advertencia */
+  border-color: #ffc107;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800; /* Color botón de advertencia al pasar el mouse */
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Color botón de peligro */
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #bd2130; /* Color botón de peligro al pasar el mouse */
+}
+
+/* Estilos para imágenes dentro de la tabla */
+.table img {
+  max-width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Estilos adicionales según sea necesario */

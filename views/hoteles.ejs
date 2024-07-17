@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Hoteles - Admin Panel</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <style>
+/* Estilos para el sidebar */
+.sidebar {
+  background-color: #343a40; /* Color de fondo oscuro */
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  padding-top: 20px;
+}
+
+.sidebar a {
+  display: block;
+  color: #f8f9fa; /* Color de texto claro */
+  padding: 10px 16px;
+  text-decoration: none;
+}
+
+.sidebar a:hover {
+  background-color: #495057; /* Color de fondo al pasar el mouse */
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+}
+
+/* Estilos para el contenido principal */
+.container {
+  margin-left: 250px; /* Ajuste para dejar espacio al sidebar */
+  padding-top: 20px;
+}
+
+/* Estilos para la tabla */
+.table {
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+/* Estilos para los botones */
+.btn {
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #007bff; /* Color botón primario */
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9; /* Color botón primario al pasar el mouse */
+}
+
+.btn-warning {
+  background-color: #ffc107; /* Color botón de advertencia */
+  border-color: #ffc107;
+}
+
+.btn-warning:hover {
+  background-color: #e0a800; /* Color botón de advertencia al pasar el mouse */
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Color botón de peligro */
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #bd2130; /* Color botón de peligro al pasar el mouse */
+}
+
+/* Estilos para imágenes dentro de la tabla */
+.table img {
+  max-width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Estilos adicionales según sea necesario */
+  </style>
+</head>
+<body>
+  <div class="sidebar bg-dark text-white">
+    <h2 class="text-center py-3">Admin Panel</h2>
+    <a href="/admin/dashboard" class="text-white d-block py-2">Dashboard</a>
+    <a href="/admin/hoteles" class="text-white d-block py-2">Gestionar Hoteles</a>
+    <a href="/admin/administradores" class="text-white d-block py-2">Listado de Administradores</a> <!-- Nuevo enlace -->
+
+    <a href="/admin/logout">Logout</a>
+  </div>
+  <div class="container mt-4">
+    <h2>Hoteles</h2>
+    <a href="/admin/hoteles/new" class="btn btn-primary mb-3">Agregar Hotel</a>
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Número Establecimiento</th>
+          <th>RUC</th>
+          <th>Razón Social</th>
+          <th>Nombre Comercial</th>
+          <th>Representante Legal</th>
+          <th>Clase</th>
+          <th>Tipo Vía</th>
+          <th>Nombre Vía</th>
+          <th>Número Vía</th>
+          <th>Distrito</th>
+          <th>Provincia</th>
+          <th>Categoría</th>
+          <th>Precio</th>
+          <th>URL</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% hoteles.forEach(hotel => { %>
+          <tr>
+            <td><%= hotel.id %></td>
+            <td><%= hotel.numero_establecimiento %></td>
+            <td><%= hotel.ruc %></td>
+            <td><%= hotel.razon_social %></td>
+            <td><%= hotel.nombre_comercial %></td>
+            <td><%= hotel.representante_legal %></td>
+            <td><%= hotel.clase %></td>
+            <td><%= hotel.tipo_via %></td>
+            <td><%= hotel.nombre_via %></td>
+            <td><%= hotel.numero_via %></td>
+            <td><%= hotel.distrito %></td>
+            <td><%= hotel.provincia %></td>
+            <td><%= hotel.categoria %></td>
+            <td><%= hotel.precio %></td>
+            <td><img src="<%= hotel.url %>" alt="Imagen del hotel"></td>
+            <td><%= hotel.TELEF %></td>
+            <td>
+              <a href="/admin/hoteles/edit/<%= hotel.id %>" class="btn btn-warning btn-sm">Editar</a>
+              <form action="/admin/hoteles/delete/<%= hotel.id %>" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

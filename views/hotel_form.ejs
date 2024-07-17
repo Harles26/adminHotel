@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= hotel.id ? 'Editar Hotel' : 'Agregar Hotel' %></title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <style>
+ 
+
+    /* Estilos para el sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 250px;
+      background-color: #343a40;
+      color: #fff;
+      padding-top: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 10px 16px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      background-color: #495057;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Estilos para el contenido principal */
+    .container {
+      margin-left: 250px; /* Espacio para el sidebar */
+      padding-top: 20px;
+    }
+
+    .card {
+      border: none;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      background-color: #007bff;
+      color: #fff;
+      border-bottom: none;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar"><br>
+    <h2>Admin Panel</h2>
+    <a href="/admin/dashboard">Dashboard</a>
+    <a href="/admin/hoteles">Gestionar Hoteles</a>
+    <a href="/admin/logout">Logout</a>
+  </div>
+  <div class="container">
+    <div class="card mt-5">
+      <div class="card-header">
+        <h2><%= hotel.id ? 'Editar Hotel' : 'Agregar Hotel' %></h2>
+      </div>
+      <div class="card-body">
+        <form action="<%= hotel.id ? '/admin/hoteles/update/' + hotel.id : '/admin/hoteles' %>" method="post">
+          <div class="form-group row">
+            <label for="numero_establecimiento" class="col-sm-3 col-form-label text-sm-right">Número Establecimiento:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="numero_establecimiento" name="numero_establecimiento" value="<%= hotel.numero_establecimiento %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="ruc" class="col-sm-3 col-form-label text-sm-right">RUC:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="ruc" name="ruc" value="<%= hotel.ruc %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="razon_social" class="col-sm-3 col-form-label text-sm-right">Razón Social:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="razon_social" name="razon_social" value="<%= hotel.razon_social %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="nombre_comercial" class="col-sm-3 col-form-label text-sm-right">Nombre Comercial:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="nombre_comercial" name="nombre_comercial" value="<%= hotel.nombre_comercial %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="representante_legal" class="col-sm-3 col-form-label text-sm-right">Representante Legal:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="representante_legal" name="representante_legal" value="<%= hotel.representante_legal %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="clase" class="col-sm-3 col-form-label text-sm-right">Clase:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="clase" name="clase" value="<%= hotel.clase %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="tipo_via" class="col-sm-3 col-form-label text-sm-right">Tipo Vía:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="tipo_via" name="tipo_via" value="<%= hotel.tipo_via %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="nombre_via" class="col-sm-3 col-form-label text-sm-right">Nombre Vía:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="nombre_via" name="nombre_via" value="<%= hotel.nombre_via %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="numero_via" class="col-sm-3 col-form-label text-sm-right">Número Vía:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="numero_via" name="numero_via" value="<%= hotel.numero_via %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="distrito" class="col-sm-3 col-form-label text-sm-right">Distrito:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="distrito" name="distrito" value="<%= hotel.distrito %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="provincia" class="col-sm-3 col-form-label text-sm-right">Provincia:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="provincia" name="provincia" value="<%= hotel.provincia %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="categoria" class="col-sm-3 col-form-label text-sm-right">Categoría:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="categoria" name="categoria" value="<%= hotel.categoria %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="precio" class="col-sm-3 col-form-label text-sm-right">Precio:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="precio" name="precio" value="<%= hotel.precio %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="url" class="col-sm-3 col-form-label text-sm-right">URL:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="url" name="url" value="<%= hotel.url %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="TELEF" class="col-sm-3 col-form-label text-sm-right">Teléfono:</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="TELEF" name="TELEF" value="<%= hotel.TELEF %>" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+              <button type="submit" class="btn btn-primary"><%= hotel.id ? 'Actualizar' : 'Agregar' %> Hotel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
